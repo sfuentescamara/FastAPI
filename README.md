@@ -87,6 +87,8 @@ Para crear la configuración de Kubernetes vamos a distinguir los recursos tipo 
     kind: Deployment
     metadata:
         name: nombre-del-deployment
+        labels:
+            app: nombre-de-la-app
     spec:
         replicas: 3
         selector:
