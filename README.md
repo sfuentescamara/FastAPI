@@ -125,3 +125,13 @@ Una vez creado creado el archivo de configuración se puede ejecutar de la sigui
 
 ```kubectl apply -f deployment.yaml```
 
+Para comprobar que el servicio esta activo:
+
+```kubectl get pods```
+
+```kubectl logs <nombre_del_pod>```
+
+```kubectl exex -it <nombre_del_pod> -- pip3 install requests```
+
+```kubectl exec -it <nombre_del_pod> -- python -c "import requests; print(requests.get('http://localhost:8080').text)"```
+
