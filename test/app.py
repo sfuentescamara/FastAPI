@@ -1,15 +1,15 @@
-import config
+import app.config as config
 import os
 
 debug = config.DEBUG_MODE
 
 def create_fast_api(app):
-    from api.api import myFastApi
+    from test.api import myFastApi
     api = myFastApi(app)
     return api
 
 def create_flask_api(app):
-    from api.api import myFlaskApi
+    from test.api import myFlaskApi
     api = myFlaskApi(app)
     return api
 
