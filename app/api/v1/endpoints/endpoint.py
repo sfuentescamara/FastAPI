@@ -1,2 +1,5 @@
 
-from app.dependencies import *
+from app.core.dependencies import *
+
+router = APIRouter()
+
