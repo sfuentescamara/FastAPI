@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Page Title{% endblock %}</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="/static/stylesRoom.css">
+</head>
+<body class="light-mode">
+    <div class="headContainer">
+        <h2 id="idRoom" onclick="copyIdRoom('{{ id_room }}')">Id Room: {{ id_room }}</h1>
+    </div>
+    <div class="container">
+
+        <!-- Main Area -->
+        <div class="main-area">
+            <div class="video-container">
+                <video id="videoPlayer" style="width: 100%;" controls>
+                    <source id="videoSource" src="video/test" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/uw4rpCVVRqU?si=_P5VLCfNYSwwg8Pi" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            --> 
+            </div>
+            <div class="input-container">
+                <input type="text" id="videoUrlInput" placeholder="Enter video URL...">
+                <button onclick="updateVideoSrc()">Update Video</button>
+            </div>
+            <div class="config-buttons">
+                <!-- Buttons for configuration -->
+                <button onclick="configFunction1()">Config 1</button>
+                <button onclick="configFunction2()">Config 2</button>
+                <button onclick="configFunction3()">Config 3</button>
+            </div>
+        </div>
+
+        <button id="toggleChat">Mostrar/Ocultar Chat</button>
+        <div class="notification" id="newMessageNotification">Nuevo mensaje en el chat</div>
+
+        <!-- Chat Area -->
+        <div id="chat-area" class="chat-area">
+            <div class="chat-window" id="chatWindow">
+                <div class="chat-message">Welcome to the chat!</div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="chatInput" placeholder="Type your message...">
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+    <script src="/static/scriptRoom.js"></script>
+
+</body>
+</html>

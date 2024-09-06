@@ -8,10 +8,15 @@ from yt_dlp import YoutubeDL
 import os
 
 def get_video_stream_url(youtube_url):
-    ydl_opts = {'format': 'best'}
+    ydl_opts = {
+        'format': 'mp4',
+        # 'quiet': True
+    }
+
     with YoutubeDL(ydl_opts) as ydl:
-        info = ydl.extract_info(youtube_url, download=False)
-        return info
+        info_dict = ydl.extract_info(youtube_url, download=False)
+        # video_url = info_dict.get('url', None)
+        return info_dict
 
 def extract_frames(stream_url, output_folder, frame_interval=1):
     if not os.path.exists(output_folder):
@@ -24,11 +29,13 @@ def extract_frames(stream_url, output_folder, frame_interval=1):
 
     process = (
         ffmpeg
-        .input(stream_url['url'])
+        .input(stream_url.get('url', None))
+        # .input("/mnt/chromeos/GoogleDrive/MyDrive/github/fastAPI/fastapi_app/Dasha - Austin (Official Music Video) [FyjnbSsZ2tc].mp4")
         .filter('fps', fps=1/frame_interval)
         .output('pipe:', format='rawvideo', pix_fmt='rgb24')
         .run_async(pipe_stdout=True)
     )
+    print(" ".join(process.args))
 
     frame_count = 0
     while True:
@@ -45,9 +52,10 @@ def extract_frames(stream_url, output_folder, frame_interval=1):
     print(f"Extracted {frame_count} frames")
 
 # Usage
-youtube_url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"  # Replace with your YouTube video URL
-output_path = PROYECT_PATH + "dwloads"  # Current directory
-output_folder = output_path + "frames"
+youtube_url = "https://www.youtube.com/watch?v=BaW_jenozKc"  # Replace with your YouTube video URL
+youtube_url = "https://youtu.be/FyjnbSsZ2tc?si=SLwUuTEivy21vOjN"
+output_path = PROYECT_PATH + "dwloads/"  # Current directory
+output_folder = output_path + "frames/"
 frame_interval = 1  # Extract one frame every second
 
 stream_url = get_video_stream_url(youtube_url)

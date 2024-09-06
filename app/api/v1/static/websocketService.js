@@ -1,8 +1,8 @@
-const websocketURL = "ws://localhost:8000/ws";
 
 class WebSocketService {
   constructor(url) {
-    this.url = url;
+    const clientId = Date.now();
+    this.url = `ws://localhost:8000/ws/${clientId}`;
     this.socket = null;
   }
 
@@ -43,5 +43,4 @@ class WebSocketService {
   }
 }
 
-const webSocketService = new WebSocketService(websocketURL);
-export default webSocketService;
+export default WebSocketService;

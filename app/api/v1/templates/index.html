@@ -3,41 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tabbed Interface</title>
+    <title>{% block title %}Page Title{% endblock %}</title>
     <link rel="stylesheet" href="/static/styles.css">
-    <script src="/static/script.js"></script>
+    <script type="module" src="/static/script.js"></script>
 </head>
-<body onload="showTab(1)">
-
-    <div class="header">
-        <div onclick="showTab(1)">Tab 1</div>
-        <div onclick="showTab(2)">Tetris</div>
-        <div onclick="showTab(3)">Tab 3</div>
-        <div onclick="showTab(4)">Tab 4</div>
-        <button onclick="darkMode()" id="dark-mode-toggle">Dark Mode</button>
-    </div>
+<body onload="showTab(1)" class="light-mode">
+    {% block header %}
+        {% include "header.html" %}
+    {% endblock %}
 
     <div id="content1" class="content">
-        <h2>Tab 1 Content</h2>
-        <p>This is the content for tab 1.</p>
+        <h2>What can you do here?</h2>
+        <p>Play with fiends, choose a video and have fun together...</p>
+        <input text="text" id="input_nick" placeholder="User616">
+        <button onclick="createRoom()">Create Room</button>
+        <button onclick="joinToRoom()">Join to Room</button>
+
     </div>
     <div id="content2" class="content">
-        <h2>Tetris</h2>
-        <link rel="stylesheet" href="/static/styles_tetris.css">
-        <div class="game-container">
-            <canvas id="tetris" width="240" height="400"></canvas>
-            <p1>Score: </p1>
-            <div id="score"></div>
-            <script src="/static/script_tetris.js"></script>
-        </div>
+        <h2>Admin Area</h2>
+        {% include "admin_area.html" %}
     </div>
     <div id="content3" class="content">
-        <h2>Video</h2>
-        <p>Input</p>
+        <!-- <h2>include "tetris.html"</h2>
+        {% include "tetris.html" %} -->
     </div>
     <div id="content4" class="content">
-        <h2>Tab 4 Content</h2>
-        <p>This is the content for tab 4.</p>
+        <h2>include "tab4.html"</h2>
+        {% include "tab4.html" %}
     </div>
 
 </body>

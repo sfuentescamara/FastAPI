@@ -1,26 +1,35 @@
 from fastapi import WebSocket, WebSocketDisconnect
 
 from app.core.dependencies import *
+from app.model.base import RoomManager
+
+router = APIRouter()
 
 class ConnectionManager:
-    def __init__(self):
-        self.active_connections: List[WebSocket] = []
+    active_connections: List[WebSocket] = []
 
-    async def connect(self, websocket: WebSocket):
+    @classmethod
+    async def connect(cls, websocket: WebSocket):
         await websocket.accept()
-        self.active_connections.append(websocket)
+        cls.active_connections.append(websocket)
 
-    def disconnect(self, websocket: WebSocket):
-        self.active_connections.remove(websocket)
+    @classmethod
+    def disconnect(cls, websocket: WebSocket):
+        cls.active_connections.remove(websocket)
+        if RoomManager.closeRoom(websocket.path_params['client_id']):
+            # print("engine check ")
+            pass
 
-manager = ConnectionManager()
 
 @router.websocket("/ws/{client_id}")
 async def websocket_endpoint(websocket: WebSocket, client_id: int):
-    await manager.connect(websocket)
+    await ConnectionManager.connect(websocket)
     try:
         while True:
             data = await websocket.receive_text()
+            print(data)
             # Procesar datos
+            # call to engine and precces data
+            
     except WebSocketDisconnect:
-        manager.disconnect(websocket)
+        ConnectionManager.disconnect(websocket)
