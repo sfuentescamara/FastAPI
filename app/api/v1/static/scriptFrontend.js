@@ -26,19 +26,22 @@ function renderView(page) {
 
 async function createRoom() {
     let nick = document.getElementById("input_nick").value;
-    let client = { 'id_client': 0, 'name': nick};
     let ws = window.ws;
+    let ts_client = String(ws.ts_client);
+    let client = { 
+        'ts_client': ts_client,
+        'id_client': 0,
+        'name': nick,
+        'ws': ""
+    };
     await fetch('/api/v1/newRoom', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-            id_room: "",
-            creator: client,
-            ws_list: [ws],
-            users: [client]
-        }),
+        body: JSON.stringify(
+            client
+        ),
     }).then((response) => {
         if (response.status === 200) {
             console.log("Status OK");
@@ -49,17 +52,22 @@ async function createRoom() {
     }).then(data => {
         try {
             console.log(data);
+            let room = {
+                'id_room': data.id_room,
+                'users': [],
+                'opt': data.opt
+            };
             fetch('/api/v1/room/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-            body: JSON.stringify(data.data)
-            })
+            body: JSON.stringify(room)
+        })
             .then(response => {
                 if (response.ok) {
-                    document.user = data.data.creator;
-                    document.room = data.data.id_room;
+                    document.user = data.client;
+                    document.room = data.id_room;
                     return response.text();
                 } else {
                     throw new Error('Error en la solicitud');
@@ -78,4 +86,72 @@ async function createRoom() {
     }).catch(error => console.error('Error:', error));
 }
 
-export {showTab, darkMode, createRoom};
+async function joinToRoom() {
+    let idRoom = prompt('Insert ID room');
+    let nick = document.getElementById("input_nick").value;
+    let ws = window.ws;
+    let ts_client = String(ws.ts_client);
+    let client = { 
+        'ts_client': ts_client,
+        'id_client': 0,
+        'name': nick,
+        'ws': ""
+    };
+    await fetch('/api/v1/joinRoom', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            'data': {
+                id_room: idRoom,
+                users: [client],
+                opt: ""
+            },
+            'client': client
+        }),
+    }).then((response) => {
+        if (response.status === 200) {
+            console.log("Status OK");
+            return response.json();
+        } else {
+            console.log("Error");
+        }
+    }).then(data => {
+        try {
+            console.log(data);
+            let room = {
+                'id_room': data.id_room,
+                'users': [],
+                'opt': data.opt
+            };
+            fetch('/api/v1/room/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            body: JSON.stringify(room)
+            })
+            .then(response => {
+                if (response.ok) {
+                    document.user = data.client;
+                    document.room = data.id_room;
+                    return response.text();
+                } else {
+                    throw new Error('Error en la solicitud');
+                }
+            })
+            .then(html => {
+                document.open();
+                document.write(html);
+                document.close();
+            })
+            .catch(error => console.error('Error:', error));
+
+        } catch (error) {
+            console.log(error);
+        }
+    }).catch(error => console.error('Error:', error));
+}
+
+export {showTab, darkMode, createRoom, joinToRoom};

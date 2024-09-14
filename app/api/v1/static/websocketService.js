@@ -1,8 +1,8 @@
 
 class WebSocketService {
   constructor(url) {
-    const clientId = Date.now();
-    this.url = `ws://localhost:8000/ws/${clientId}`;
+    this.ts_client = Date.now();
+    this.url = `ws://localhost:8000/ws/${this.ts_client}`;
     this.socket = null;
   }
 
@@ -15,6 +15,7 @@ class WebSocketService {
 
     this.socket.onmessage = (event) => {
       console.log("Message received from server:", event.data);
+      addMessage(event.data)
     };
 
     this.socket.onclose = (event) => {

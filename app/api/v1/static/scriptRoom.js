@@ -95,7 +95,6 @@ function obtenerCookie(nombre) {
 const chatSection = document.getElementById('chat-area');
 const toggleChat = document.getElementById('toggleChat');
 /* const chatInput = document.getElementById('chatInput'); */
-const chatMessages = document.getElementById('chat-message');
 const notification = document.getElementById('newMessageNotification');
 let isChatVisible = true;
 
@@ -118,12 +117,16 @@ function checkWindowSize() {
     }
 }
 
-function addMessage(message) {
-    const messageElement = document.createElement('p');
-    messageElement.textContent = message;
-    chatMessages.appendChild(messageElement);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
+function addMessage(newMessage) {
+    const chatInput = document.getElementById('chatInput');
+    const chatWindow = document.getElementById('chatWindow');
 
+    if (newMessage.trim() !== '') {
+        const message = document.createElement('div');
+        message.classList.add('chat-message');
+        message.textContent = newMessage;
+        chatWindow.appendChild(message);
+    }
     if (!isChatVisible) {
         showNotification();
     }
